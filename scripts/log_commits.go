@@ -12,14 +12,14 @@ import (
 func main() {
   cmd := exec.Command("git", "log", "-n", "3", "--pretty=format:%h - %an, %ar : %s")
   out, err := cmd.Output()
-  if error != nil {
+  if err != nil {
     fmt.Printf("Error executant gitlog %v\n", err)
     os.Exit(1)
   }
 
   //Creació de la carpeta log
   logDir := filepath.Join("..", "log")
-  if _, error := os.Stat(logDir); os.IsNotExist(err) {
+  if _, err := os.Stat(logDir); os.IsNotExist(err) {
     //Definim permisos d'escriptura
     err = os.Mkdir(logDir, 0755)
     if err != nil {
@@ -30,7 +30,7 @@ func main() {
 
   //Generar nom de l'arxiu
   currentTime := time.Now().Format("2006-01-02_15:04:05") //Màscara de YYYY-MM-DD HH:MM:SS
-  logFile := filepath.Join(logDir, fmr.Sprintf("commits_%s.txt", currentTime))
+  logFile := filepath.Join(logDir, fmt.Sprintf("commits_%s.txt", currentTime))
 
   //Escriure l'arxiu
   contingut := fmt.Sprintf("S'han escrit els úlñtims tres commits del repositori:\n%s", string(out))
