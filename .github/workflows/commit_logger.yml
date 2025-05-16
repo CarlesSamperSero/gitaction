@@ -39,7 +39,7 @@ jobs:
           ls -la log/
 
           #Filtre per comitejar només si hi ha canvis
-          if [ -n "$(find log/ -type f -name 'commits_*.txt')"], then 
+          if [ -n "$(find log/ -type f -name 'commits_*.txt')"]; then 
             git add log/
             git commit -m "Auto: Afegir el log dels últims commits"
             git push
