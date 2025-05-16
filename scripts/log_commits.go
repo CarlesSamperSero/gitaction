@@ -29,7 +29,7 @@ func main() {
   }
 
   //Generar nom de l'arxiu
-  currentTime := time.Now().Format("2006-01-02_15:04:05") //Màscara de YYYY-MM-DD HH:MM:SS
+  currentTime := time.Now().Format("2006-01-02_15_04_05") //Màscara de YYYY-MM-DD HH:MM:SS
   logFile := filepath.Join(logDir, fmt.Sprintf("commits_%s.txt", currentTime))
 
   //Escriure l'arxiu
