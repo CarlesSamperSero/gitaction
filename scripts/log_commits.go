@@ -41,3 +41,4 @@ func main() {
   }
 
   fmt.Printf("S'ha creat l'arxiu de log en %s\n", logFile)
+}
