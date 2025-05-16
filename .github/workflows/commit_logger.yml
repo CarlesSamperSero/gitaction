@@ -1,0 +1,49 @@
+name: Commit Logger
+
+on: 
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  schedule: 
+    - cron: "59 23 * * 5" #Cada divendres a les 23:59 s'executa
+
+jobs:
+  log-commits:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 5 #Afegint més commits per si de cas. També auda fent una pre-càrrega, fent més lleuger l'script. (carrega 5 commits, després l'script de go agafa els 3 últims)
+
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20"
+
+       #Creem un directori log sempre que no existeixi
+      - name: Run script logger
+        run: |
+          mkdir -p log/
+          cd scripts
+          go run log_commits.go || exit 1
+
+      #Creem un usuari per identificar els commits de la màquina virtual
+      - name: Commit and push
+        run: |
+          git config --global user.name "Github Actions Bot"
+          git config --global user.email "actions@github.com"
+
+          #Llistar els directoris
+          echo "---Arxius en el log/ ---"
+          ls -la log/
+
+          #Filtre per comitejar només si hi ha canvis
+          if [ -n "$(find log/ -type f -name 'commits_*.txt')"], then 
+            git add log/
+            git commit -m "Auto: Afegir el log dels últims commits"
+            git push
+          else
+            echo "No hi ha arxius nous per comitejar"
+          fi
+          
