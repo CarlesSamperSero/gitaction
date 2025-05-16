@@ -35,7 +35,7 @@ func main() {
   //Escriure l'arxiu
   contingut := fmt.Sprintf("S'han escrit els úlñtims tres commits del repositori:\n%s", string(out))
   err = os.WriteFile(logFile, []byte(contingut), 0644)
-  if != nil {
+  if err != nil {
     fmt.Printf("S'ha produit un error creant en %s %v\n", logFile, err)
     os.Exit(1)
   }
